@@ -1,0 +1,239 @@
+package BinaryTree;
+import java.util.Scanner;
+
+import BinaryTree.BST.node;
+
+public class BSTdel {
+	static node root;
+	static node newNd1;
+	static node newNd2;
+	static node newNd11;
+	static node newNd12;
+	static node newNd3;
+	static node newNd112;
+	static node newNd22;
+	static int flag=0;
+	public static class node
+	{
+		int data;
+		node left,right;
+		node(int temp)
+		{
+			data=temp;
+			left=right=null;
+		}
+	}
+
+	public static void insert(int key)
+	{
+		root=insertItem(root,key);
+	}
+	public static node insertItem(node root,int temp)
+	{
+		if(root==null)
+		{
+			root=new node(temp);
+			return root;
+		}	
+		else if(temp<root.data)
+			{
+				root.left=insertItem(root.left,temp);
+		
+			}
+			else if(root.data<temp)
+			{
+			root.right=insertItem(root.right,temp);
+			}
+		return root;
+	}
+	public static void search(int key)
+	{
+		root=SearchItem(root,key);
+	}
+	public static node SearchItem(node root,int input)
+	{
+		if(root==null)
+		{
+			System.out.println("not found");
+			flag=1;
+		}
+		else if(root.data<input)
+		{
+			root.right=SearchItem(root.right,input);
+		}
+		else if(root.data>input)
+		{
+			root.left=SearchItem(root.left,input);
+		}
+		else if(root.data==input)
+		{
+			System.out.println("found");
+		}return root;
+	}
+	public static void delete(int key)
+	{
+		search(key);
+		if(flag==0)
+		{
+			deleteItem(root,key);
+		}
+	}
+	public static void deleteItem(node root,int key)
+	{
+		if(root.data>key)
+		{
+			flag=1;
+			deleteItem(root.left,key);
+			if(flag==2)
+			{
+				root.left=null;
+				flag=1;
+			}
+			else if(flag==3)
+			{
+				root.left=null;
+				root.left=newNd1;
+				flag=1;
+			}
+			else if(flag==4)
+			{
+				root.left=null;
+				root.left=newNd2;
+				flag=1;
+			}
+			else if(flag==5)
+			{
+				root.left=null;
+				root.left=newNd12;
+				flag=1;
+			}
+		}
+		else if(root.data<key)
+		{
+			flag=1;
+			deleteItem(root.right,key);
+			if(flag==2)
+			{
+				root.right=null;
+				flag=1;
+			}
+			else if(flag==3)
+			{
+				root.right=null;
+				root.right=newNd1;
+				flag=1;
+			}
+			else if(flag==4)
+			{
+				root.right=null;
+				root.right=newNd2;
+				flag=1;
+			}
+			else if(flag==5)
+			{
+				root.right=null;
+				root.right=newNd12;
+				flag=1;
+			}
+		}
+		else if(root.data==key)
+		{
+			if(root.left==null && root.right==null)
+			{
+				//node Nd=root;
+				//Nd=null;
+				//System.out.println("item deleted");
+				flag=2;
+			}
+			else if(root.left!=null && root.right==null)
+			{
+				flag=3;
+				newNd1=root.left;
+			}
+			else if(root.left==null && root.right!=null)
+			{
+				flag=4;
+				newNd2=root.right;
+			}
+			else if(root.left!=null && root.right!=null && flag==1)
+			{
+				newNd11=root.left;
+				newNd12=root.right;
+				while(newNd12.left!=null)
+				{
+					newNd12=newNd12.left;
+				}
+				newNd12.left=newNd11;
+				newNd12=root.right;
+				newNd3=root.right;
+				root.left=null;
+				newNd3=null;
+				root=null;
+				root=newNd12;
+	
+				flag=5;
+			}
+			else if(root.left!=null && root.right!=null && flag==0 )
+			{
+				newNd22=root.right;
+				int temp=root.data;
+				while(newNd22.left!=null)
+				{
+					newNd22=newNd22.left;
+				}
+				
+				root.data=newNd22.data;
+				newNd22.data=temp;
+				if(root.right.data==temp)
+				{
+					root.right=null;
+				}
+				else if(root.right.left.data==temp)
+				{
+					root.right.left=null;
+				}
+				else 
+				{
+					node newNd=root.right;
+					while(newNd.left.left!=null)
+					{
+						newNd=newNd.left;
+					}
+					newNd.left=null;
+				}
+				
+			}
+		}
+	}
+	
+	
+	public static void Inorder(node current)
+	{
+		if(current!=null)
+		{	Inorder(current.left);
+			System.out.print(current.data+" ");
+			Inorder(current.right);
+		}return;
+		}
+	public static void main(String[] args) {
+		
+		BSTdel li=new BSTdel();
+		li.insert(50);
+		li.insert(30);
+		li.insert(70);
+		li.insert(35);
+		li.insert(25);
+		li.insert(20);
+		li.insert(28);
+		li.insert(8);
+		li.insert(65);
+		li.insert(100);
+		li.insert(29);
+		li.delete(50);
+		li.Inorder(root);
+		
+		
+
+	}
+
+}
